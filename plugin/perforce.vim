@@ -20,71 +20,71 @@ endif
 let loaded_perforce=1
 
 " define the mappings that provide the user interface to this plug-in
-augroup perforce
+"augroup perforce
 
-  " events
-  autocmd FileChangedRO * nested call <SID>P4OpenFileForEditWithPrompt()
-  autocmd BufRead * call <SID>P4InitialBufferVariables()
-  autocmd BufRead * call <SID>P4GetFileStatus()
+  "" events
+  "autocmd FileChangedRO * nested call <SID>P4OpenFileForEditWithPrompt()
+  "autocmd BufRead * call <SID>P4InitialBufferVariables()
+  "autocmd BufRead * call <SID>P4GetFileStatus()
 
-  " Keyboard shortcuts - default <Leader> is \
-  map <silent> <Leader><Leader> :echo <SID>P4GetInfo()<CR>
-  map <silent> <Leader>a :echo <SID>P4AnnotateFile()<CR>
-  map <silent> <Leader>e :call <SID>P4OpenFileForEdit()<CR>
-  map <silent> <Leader>r :call <SID>P4RevertFile()<CR>
-  map <silent> <Leader>i :echo <SID>P4GetFileStatus()<CR>
-  map <silent> <Leader>s :echo <SID>P4GetFileStatus()<CR> " For backward compatibility
-  map <silent> <Leader>y :echo <SID>P4SyncFile()<CR>
-  map <silent> <Leader>d :echo <SID>P4DiffFile()<CR>
-  map <silent> <Leader>u :echo <SID>P4UDiffFile()<CR>
-  map <silent> <Leader>z :echo <SID>P4VDiffFile()<CR>
-  map <silent> <Leader>v :echo <SID>P4VersionsFile()<CR>
-  map <silent> <Leader>p :echo <SID>P4PrintFile()<CR>
-  map <silent> <Leader>h :echo <SID>P4Help()<CR>
-  map <silent> <Leader>l :call <SID>P4Login()<CR>
-  map <silent> <Leader>x :call <SID>P4OpenFileForDeletion()<CR>
-  map <silent> <Leader>C :call <SID>P4CreateChangelist()<CR>
-  map <silent> <Leader>D :echo <SID>P4DiffFiles()<CR>
-  map <silent> <Leader>U :echo <SID>P4UDiffFiles()<CR>
-  map <silent> <Leader>L :echo <SID>P4GetChangelists(1)<CR>
-  map <silent> <Leader>I :echo <SID>P4GetChangelistInfo()<CR>
-  map <silent> <Leader>F :echo <SID>P4GetFiles()<CR>
-  map <silent> <Leader>X :call <SID>P4DeleteChangelist()<CR>
-  map <silent> <Leader>S :call <SID>P4SubmitChangelist()<CR>
+  "" Keyboard shortcuts - default <Leader> is \
+  "map <silent> <Leader><Leader> :echo <SID>P4GetInfo()<CR>
+  "map <silent> <Leader>a :echo <SID>P4AnnotateFile()<CR>
+  "map <silent> <Leader>e :call <SID>P4OpenFileForEdit()<CR>
+  "map <silent> <Leader>r :call <SID>P4RevertFile()<CR>
+  "map <silent> <Leader>i :echo <SID>P4GetFileStatus()<CR>
+  "map <silent> <Leader>s :echo <SID>P4GetFileStatus()<CR> " For backward compatibility
+  "map <silent> <Leader>y :echo <SID>P4SyncFile()<CR>
+  "map <silent> <Leader>d :echo <SID>P4DiffFile()<CR>
+  "map <silent> <Leader>u :echo <SID>P4UDiffFile()<CR>
+  "map <silent> <Leader>z :echo <SID>P4VDiffFile()<CR>
+  "map <silent> <Leader>v :echo <SID>P4VersionsFile()<CR>
+  "map <silent> <Leader>p :echo <SID>P4PrintFile()<CR>
+  "map <silent> <Leader>h :echo <SID>P4Help()<CR>
+  "map <silent> <Leader>l :call <SID>P4Login()<CR>
+  "map <silent> <Leader>x :call <SID>P4OpenFileForDeletion()<CR>
+  "map <silent> <Leader>C :call <SID>P4CreateChangelist()<CR>
+  "map <silent> <Leader>D :echo <SID>P4DiffFiles()<CR>
+  "map <silent> <Leader>U :echo <SID>P4UDiffFiles()<CR>
+  "map <silent> <Leader>L :echo <SID>P4GetChangelists(1)<CR>
+  "map <silent> <Leader>I :echo <SID>P4GetChangelistInfo()<CR>
+  "map <silent> <Leader>F :echo <SID>P4GetFiles()<CR>
+  "map <silent> <Leader>X :call <SID>P4DeleteChangelist()<CR>
+  "map <silent> <Leader>S :call <SID>P4SubmitChangelist()<CR>
 
-  " user-defined commands must start with a capital letter and should not include digits
-  command -nargs=1 Perforce :call <SID>P4ShellCommandAndEditCurrentBuffer( <f-args> )
-  command -nargs=0 PerforceLaunch :call <SID>P4LaunchFromP4()
+  "" user-defined commands must start with a capital letter and should not include digits
+  "command -nargs=1 Perforce :call <SID>P4ShellCommandAndEditCurrentBuffer( <f-args> )
+  "command -nargs=0 PerforceLaunch :call <SID>P4LaunchFromP4()
 
-  " menus
-  menu <silent> &Perforce.&Login :call <SID>P4Login()<CR>
-  menu <silent> &Perforce.Info :echo <SID>P4GetInfo()<CR>
-  menu <silent> Perforce.-Sep1- :
-  menu <silent> &Perforce.Show\ file\ &annotated :echo <SID>P4AnnotateFile()<CR>
-  menu <silent> &Perforce.List\ file\ &versions :echo <SID>P4VersionsFile()<CR>
-  menu <silent> &Perforce.&Diff :echo <SID>P4DiffFile()<CR>
-  menu <silent> &Perforce.&Unified diff :echo <SID>P4UDiffFile()<CR>
-  menu <silent> &Perforce.&Edit :call <SID>P4OpenFileForEdit()<CR>
-  menu <silent> &Perforce.Mark\ file\ for\ deletion :call <SID>P4OpenFileForDeletion()<CR>
-  menu <silent> &Perforce.&Revert :call <SID>P4RevertFile()<CR>
-  menu <silent> &Perforce.S&ync :echo <SID>P4SyncFile()<CR>
-  menu <silent> &Perforce.&Status :echo <SID>P4GetFileStatus()<CR>
-  menu <silent> Perforce.-Sep2- :
-  menu <silent> &Perforce.Submit\ changelist :call <SID>P4SubmitChangelist()<CR>
-  menu <silent> Perforce.-Sep3- :
-  menu <silent> &Perforce.&Create\ changelist :call <SID>P4CreateChangelist()<CR>
-  menu <silent> &Perforce.Diff\ all\ files :echo <SID>P4DiffFiles()<CR>
-  menu <silent> &Perforce.Unified diff\ all\ files :echo <SID>P4UDiffFiles()<CR>
-  menu <silent> &Perforce.Delete\ changelist :call <SID>P4DeleteChangelist()<CR>
-  menu <silent> &Perforce.List\ change&lists :echo <SID>P4GetChangelists(1)<CR>
-  menu <silent> &Perforce.Get\ changelist\ info :echo <SID>P4GetChangelistInfo()<CR>
-  menu <silent> &Perforce.List\ &file\ names :echo <SID>P4GetFiles()<CR>
-augroup END
+  "" menus
+  "menu <silent> &Perforce.&Login :call <SID>P4Login()<CR>
+  "menu <silent> &Perforce.Info :echo <SID>P4GetInfo()<CR>
+  "menu <silent> Perforce.-Sep1- :
+  "menu <silent> &Perforce.Show\ file\ &annotated :echo <SID>P4AnnotateFile()<CR>
+  "menu <silent> &Perforce.List\ file\ &versions :echo <SID>P4VersionsFile()<CR>
+  "menu <silent> &Perforce.&Diff :echo <SID>P4DiffFile()<CR>
+  "menu <silent> &Perforce.&Unified diff :echo <SID>P4UDiffFile()<CR>
+  "menu <silent> &Perforce.&Edit :call <SID>P4OpenFileForEdit()<CR>
+  "menu <silent> &Perforce.Mark\ file\ for\ deletion :call <SID>P4OpenFileForDeletion()<CR>
+  "menu <silent> &Perforce.&Revert :call <SID>P4RevertFile()<CR>
+  "menu <silent> &Perforce.S&ync :echo <SID>P4SyncFile()<CR>
+  "menu <silent> &Perforce.&Status :echo <SID>P4GetFileStatus()<CR>
+  "menu <silent> Perforce.-Sep2- :
+  "menu <silent> &Perforce.Submit\ changelist :call <SID>P4SubmitChangelist()<CR>
+  "menu <silent> Perforce.-Sep3- :
+  "menu <silent> &Perforce.&Create\ changelist :call <SID>P4CreateChangelist()<CR>
+  "menu <silent> &Perforce.Diff\ all\ files :echo <SID>P4DiffFiles()<CR>
+  "menu <silent> &Perforce.Unified diff\ all\ files :echo <SID>P4UDiffFiles()<CR>
+  "menu <silent> &Perforce.Delete\ changelist :call <SID>P4DeleteChangelist()<CR>
+  "menu <silent> &Perforce.List\ change&lists :echo <SID>P4GetChangelists(1)<CR>
+  "menu <silent> &Perforce.Get\ changelist\ info :echo <SID>P4GetChangelistInfo()<CR>
+  "menu <silent> &Perforce.List\ &file\ names :echo <SID>P4GetFiles()<CR>
+"augroup END
 
 "----------------------------------------------------------------------------
 " Initialize variables
 "----------------------------------------------------------------------------
-function s:P4InitialBufferVariables()
+function g:P4InitialBufferVariables()
     let b:headrev=""
     let b:depotfile=""
     let b:haverev=""
@@ -308,17 +308,20 @@ endfunction
 " This function prompts before opening -- it is used when a read-only file
 " is altered for the first time
 "----------------------------------------------------------------------------
-function s:P4OpenFileForEditWithPrompt()
+function g:P4OpenFileForEditWithPrompt()
     let action=confirm("File is read only.  p4 Edit the file?" ,"&Yes\n&No", 1, "Question")
     if action == 1
-         call s:P4OpenFileForEdit()
+         call g:P4OpenFileForEdit()
     endif
 endfunction
 
 "----------------------------------------------------------------------------
 " Open a file for editing, with more checking than just wrapping the command
 "----------------------------------------------------------------------------
-function s:P4OpenFileForEdit()
+function g:P4OpenFileForEdit()
+
+    echom "P4 Opening file ". expand( "%:p" ) 
+
     if filewritable(expand( "%:p" ) ) == 0
         if s:P4IsCurrent() != 0
             let sync = confirm("You do not have the head revision.  p4 sync the file before opening?", "&Yes\n&No", 1, "Question")
@@ -332,13 +335,14 @@ function s:P4OpenFileForEdit()
     else
         let action = "edit"
     endif
-    let listnum = ""
-    let listnum = s:P4GetChangelist( "Current changelists:\n" . s:P4GetChangelists(0) . "\nEnter changelist number: ", b:changelist )
-    if listnum == ""
-        echomsg "No changelist specified. Edit cancelled."
-        return
-    endif
-    call s:P4ShellCommandCurrentBuffer( action . " -c " . listnum )
+    "let listnum = ""
+    "let listnum = s:P4GetChangelist( "Current changelists:\n" . s:P4GetChangelists(0) . "\nEnter changelist number: ", b:changelist )
+    "if listnum == ""
+        "echomsg "No changelist specified. Edit cancelled."
+        "return
+    "endif
+    "call s:P4ShellCommandCurrentBuffer( action . " -c " . listnum )
+    call s:P4ShellCommandCurrentBuffer( action )
     if v:errmsg != ""
         echoerr "Unable to open file for " action . ". " . v:errmsg
         return
@@ -386,7 +390,7 @@ endfunction
 "----------------------------------------------------------------------------
 function P4RulerStatus()
     if !exists( "b:headrev" ) 
-        call s:P4InitialBufferVariables()
+        call g:P4InitialBufferVariables()
     endif
     if b:action == ""
         if b:headrev == ""
@@ -404,7 +408,7 @@ endfunction
 "----------------------------------------------------------------------------
 " Return file status information
 "----------------------------------------------------------------------------
-function s:P4GetFileStatus()
+function g:P4GetFileStatus()
     let filestatus = s:P4ShellCommandCurrentBuffer( "fstat" )
 
     " \\C forces case-sensitive comparison
@@ -440,7 +444,7 @@ endfunction
 " One of a set of functions that returns fields from the p4 fstat command
 "----------------------------------------------------------------------------
 function s:P4GetDepotFile()
-    let filestatus = s:P4GetFileStatus()
+    let filestatus = g:P4GetFileStatus()
     let depotfile = matchstr( filestatus, "depotFile [0-9a-zA-Z\/]*" )
     let depotfile = strpart( depotfile, 10 )
     echo depotfile
@@ -450,7 +454,7 @@ endfunction
 " One of a set of functions that returns fields from the p4 fstat command
 "----------------------------------------------------------------------------
 function s:P4GetHeadRev()
-    let filestatus = s:P4GetFileStatus()
+    let filestatus = g:P4GetFileStatus()
     let headrev = matchstr( filestatus, "headRev [0-9]*" )
     let headrev = strpart( headrev, 8 )
     return headrev
@@ -465,7 +469,7 @@ function s:P4GetHaveRev()
     if b:haverev != ""
 		 let haverev = b:haverev 
     else
-		 let filestatus = s:P4GetFileStatus()
+		 let filestatus = g:P4GetFileStatus()
         let haverev = matchstr( filestatus, "haveRev [0-9]*" )
         let haverev = strpart( haverev, 8 )
     endif
@@ -488,7 +492,7 @@ endfunction
 " One of a set of functions that returns fields from the p4 fstat command
 "----------------------------------------------------------------------------
 function s:P4Action()
-    let filestatus = s:P4GetFileStatus()
+    let filestatus = g:P4GetFileStatus()
     let action = matchstr( filestatus, "action [a-zA-Z]*\\C" )
     let action = strpart( action, 7 )
     return action
